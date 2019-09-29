@@ -1,12 +1,4 @@
 /**
- * objetivo:
- * 1. mostrar gantt (cómo se planificó la CPU) 1,2,1,2
- * 2. mostrar métricas (tiempos de espera, rendimiento, retorno)
- * 
- */
-
-
-/**
  * 
  * algoritmo de planificación FCFS
  * 
