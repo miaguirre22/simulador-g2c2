@@ -31,7 +31,7 @@ class particion {
     }
 }
 // proceso
-class proceso {
+class p {
     id: number;
     nombre: string;
     tiempoArribo: number;
