@@ -1,14 +1,6 @@
 /**
- * objetivo:
- * 1. mostrar gantt (cómo se planificó la CPU) 1,2,1,2
- * 2. mostrar métricas (tiempos de espera, rendimiento, retorno)
  * 
- */
-
-
-/**
- * 
- * algoritmo de planificación FCFS
+ * algoritmo de planificación por prioridades
  * 
  */
 module.exports = 
@@ -17,6 +9,7 @@ module.exports =
  * @typedef {any} Proceso
  * @prop {number} id 
  * @prop {number} ta tiempo de arribo
+ * @prop {number} prioridad
  * @prop {Ciclo[]} ciclo
  * 
  * @typedef {any} Ciclo
@@ -28,12 +21,10 @@ module.exports =
  */
 function(procesos /* array */) {
 
-    
     var unidadDeTiempo = 0
     var colaFuturos = procesos.filter(p => p.ta > unidadDeTiempo)
     var colaListos = procesos.filter(p => p.ta == unidadDeTiempo)
     var colaBloqueados = []
-    
     var lineaDeTiempoProcesos = []
     
     while((colaListos.length !== 0) || (colaBloqueados.length !== 0)) {
@@ -41,7 +32,8 @@ function(procesos /* array */) {
         if(colaListos.length) {
             // orden en base a el tiempo de arribo
             colaListos.sort((a,b) => {
-                if(a.ta < b.ta) return -1
+                if(a.prioridad < b.prioridad) return -1
+                else return 1
             })
         
             var proceso = colaListos[0]
@@ -59,7 +51,6 @@ function(procesos /* array */) {
             unidadDeTiempo++
         }
     
-    
         colaFuturos.forEach((p) => {
             if(p.ta <= unidadDeTiempo) {
                 colaListos.push(p)
@@ -68,8 +59,7 @@ function(procesos /* array */) {
         colaFuturos = colaFuturos.filter(p => {
             return p.ta > unidadDeTiempo
         })
-
-
+    
         colaBloqueados.forEach((p) => {
             if(p.tiempoDesbloqueo <= unidadDeTiempo) {
                 p.ciclo.splice(0,1)
@@ -81,6 +71,8 @@ function(procesos /* array */) {
         })
     }
     
+    //  console.log(unidadDeTiempo)
+    //  console.log(lineaDeTiempoProcesos)
     return {
         tiempoRetorno: unidadDeTiempo,
         gantt: lineaDeTiempoProcesos
