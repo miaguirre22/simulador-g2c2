@@ -73,5 +73,5 @@ while((colaListos.length !== 0) || (colaBloqueados.length !== 0)) {
     })
 }
 
-// console.log(unidadDeTiempo)
-// console.log(lineaDeTiempoProcesos)
+ console.log(unidadDeTiempo)
+ console.log(lineaDeTiempoProcesos)
