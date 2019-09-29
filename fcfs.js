@@ -5,26 +5,25 @@
  * 
  */
 
-proceso = function(id, estado, ta, ciclo) {
+proceso = function(id, ta, ciclo) {
     this.id = id;
-    this.estado = estado; // true listo, false bloqueado
     this.ta = ta;
     this.ciclo = ciclo;
     // tiempo de desbloqueo absoluto del proceso, si corresponde
     this.tiempoDesbloqueo = null;
 }
 
-var p1 = new proceso(1, true, 0, [
+var p1 = new proceso(1, 0, [
     {irrupcion: 3},
     {bloqueo: 3},
     {irrupcion: 2}
 ])
-var p2 = new proceso(2, true, 1, [
+var p2 = new proceso(2, 1, [
     {irrupcion: 1},
     {bloqueo: 2},
     {irrupcion: 5}
 ])
-var p3 = new proceso(3, true, 2, [
+var p3 = new proceso(3, 2, [
     {irrupcion: 4},
     {bloqueo: 2},
     {irrupcion: 5}
@@ -51,7 +50,6 @@ while((colaListos.length !== 0) || (colaBloqueados.length !== 0)) {
         lineaDeTiempoProcesos.push(proceso.id)
         proceso.ciclo.splice(0,1)
         if(proceso.ciclo.length) {
-            proceso.estado = false
             proceso.tiempoDesbloqueo = unidadDeTiempo + proceso.ciclo[0].bloqueo
             colaBloqueados.push(colaListos.splice(0,1)[0])
         } else {
