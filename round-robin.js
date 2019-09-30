@@ -26,7 +26,7 @@ function(procesos /* array */) {
     var colaBloqueados = []
     var lineaDeTiempoProcesos = []
     var quantum = 4
-
+    
     while((colaListos.length !== 0) || (colaBloqueados.length !== 0)){
         
         if(colaListos.length){
@@ -44,10 +44,12 @@ function(procesos /* array */) {
                 proceso.ciclo[0].irrupcion -= quantum
                 lineaDeTiempoProcesos.push(proceso.id)
                 // lo saco de la cola de listos y lo agrego al final
-                colaListos.splice(0,1)
                 colaListos.push(proceso)
+                colaListos.splice(0,1)
+                
             }else{
                 unidadDeTiempo += proceso.ciclo[0].irrupcion
+                lineaDeTiempoProcesos.push(proceso.id)
                 proceso.ciclo.splice(0,1)   // saco el ciclo de la lista                
                 
                 // ciclos bloqueo
@@ -64,7 +66,7 @@ function(procesos /* array */) {
             //     proceso.tiempoDesbloqueo = unidadDeTiempo + proceso.ciclo[0].bloqueo
             //     colaBloqueados.push(proceso)
             // }else{
-            //     colaListos.slice(0,1)
+            //     colaListos.splice(0,1)
             // }
         }else{
             unidadDeTiempo++    // no tengo procesos listos, pero si bloqueados - cuento una unidad de tiempo
@@ -100,9 +102,9 @@ function(procesos /* array */) {
         )
 
     }
-
+    
     return {
         tiempoRetorno: unidadDeTiempo,
-        gantt: lineaDeTiempoProcesos
+        gantt: lineaDeTiempoProcesos        
     }
 }
