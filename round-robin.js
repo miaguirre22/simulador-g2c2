@@ -44,7 +44,7 @@ function(procesos /* array */) {
                 proceso.ciclo[0].irrupcion -= quantum
                 lineaDeTiempoProcesos.push(proceso.id)
                 // lo saco de la cola de listos y lo agrego al final
-                colaListos.slice(0,1)
+                colaListos.splice(0,1)
                 colaListos.push(proceso)
             }else{
                 unidadDeTiempo += proceso.ciclo[0].irrupcion
@@ -55,7 +55,7 @@ function(procesos /* array */) {
                     proceso.tiempoDesbloqueo = unidadDeTiempo + proceso.ciclo[0].bloqueo                    
                     colaBloqueados.push(colaListos.slice(0,1))
                 }else{
-                    colaListos.slice(0,1)
+                    colaListos.splice(0,1)
                 }
             }                        
 
