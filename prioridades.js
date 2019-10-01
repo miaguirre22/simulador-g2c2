@@ -50,14 +50,10 @@ function(procesos /* array */) {
         })
 
         if(colaListos.length) {
-<<<<<<< HEAD
-            // orden en base a la prioridad
-=======
 
             unidadDeTiempo++
 
             // orden en base a el tiempo de arribo
->>>>>>> 374c223903dba0d433561d140590bdc2f6ad81e9
             colaListos.sort((a,b) => {
                 if(a.prioridad < b.prioridad) return -1
                 else return 1
