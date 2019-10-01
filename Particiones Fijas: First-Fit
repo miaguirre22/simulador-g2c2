@@ -1,0 +1,62 @@
+Accion Asignación_de_Memoria_Particiones_Fijas_FirsFit es
+
+Ambiente
+	tam_memoria, sistop, cant_particiones,i,j: entero;
+	porcentaje_uso: entero;  	//ESTE DATO SE OBTIENE DEL COMBO BOX DEL PORCENTAJE DE USO DEL SO
+
+	//INFORMACION QUE SE REQUIERE POR CADA PARTICION, ALMACENADA EN EL ARRAY DINAMICO
+	tabla_particiones: Registro
+		id_particion: entero
+		tamaño_particion: entero
+		dir_comienzo: entero
+		dir_fin: entero
+		estado: ('Ocupado','Libre')
+		id_proceso: entero
+		fragmentacion_interna: entero
+	FinRegistro;
+
+
+Algoritmo
+
+//ESTE DATO SE OBTIENE DEL COMBO BOX DONDE SE INDICA EL TAMAÑO DE LA MEMORIA
+Leer(tam_memoria);
+
+//CALCULO DEL PORCENTAJE DE OCUPACION DEL SISTEMA OPERATIVO EN LA MEMORIA
+sistop:=(tam_memoria*porcentaje_uso) DIV 100;
+
+//ESTE DATO NO SE OBTIENE COMO TAL YA QUE ESTA DADO POR LA CANTIDAD DE PARTICIONES QUE AGREGUE O QUITE EL USUARIO,
+SIRVE MAS QUE NADA PARA REPRESENTAR LA CANTIDAD DE POSICIONES QUE TENDRA EL ARRAY DINAMICO
+Leer(cant_particiones);
+
+//TOMO A LA MEMORIA COMO UN ARRAY DINAMICO DONDE LA DIMENSION ESTARA DADO POR LA CANTIDAD DE PARTICIONES, Y DENTRO DE CADA
+POSICION TENDRA LA INFORMACION REQUERIDA PARA LA TABLA DE CADA PARTICION
+tot_memoria: Arreglo[cant_particiones] de tabla_particiones;
+
+
+//CARGA DE DATOS CORRESPONDIENTES A CADA PARTICION
+Para i:=0 hasta cant_particiones hacer
+	tot_memoria[i].id_particion:=i;
+	tot_memoria[i].tamaño_particion:=tamaño_particion;    //se obtiene al momento de recolectar los datos en el simulador
+	
+	Si i=0 entonces     	//SI SE CUMPLE ESTA CONDICION QUIERE DECIR QUE ESTA EN LA PRIMER POSICION DEL ARRAY
+		tot_memoria[i].dir_comienzo:='0';
+	sino
+		tot_memoria[i].dir_comienzo:=tot_memoria[i-1].dir_fin;   
+	FinSi
+
+	tot_memoria[i].dir_fin:=tamaño_particion;
+	tot_memoria[i].estado:='Libre';					
+FinPara
+
+//CARGA DE LOS PROCESOS EN LAS PARTICIONES
+Mientras cola_listos<>'vacio' hacer
+	Para j:=0 hasta cant_particiones hacer
+		Si tot_memoria[j].estado='Libre' entonces
+			Si tot_memoria[j].tamaño_particion>tamaño_proceso entonces
+				tot_memoria[j].estado='Ocupado';
+				tot_memoria[j].id_proceso=id_proceso;  	
+				tot_memoria[j].fragmentacion_interna:=tot_memoria[j].tamaño_particion-tamaño_proceso;
+			FinSi
+		FinSi
+	FinPara
+FinMientras
