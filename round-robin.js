@@ -45,33 +45,29 @@ function(procesos /* array */) {
                 lineaDeTiempoProcesos.push(proceso.id)
                 // lo saco de la cola de listos y lo coloco al final
                 colaListos.splice(0,1)
-                colaListos.slice(colaListos.length,0,proceso)
+                colaListos[colaListos.length] = proceso
+                //colaListos.splice(colaListos.length,0,proceso)
                 //console.log(colaListos, "cola")
 
             }else{
                 unidadDeTiempo += proceso.ciclo[0].irrupcion
-                lineaDeTiempoProcesos.push(proceso.id)
+                
+                if(lineaDeTiempoProcesos[lineaDeTiempoProcesos.length - 1] == proceso.id){
+                    lineaDeTiempoProcesos.push(proceso.id)
+                }
+                
                 proceso.ciclo.splice(0,1)   // saco el ciclo de la lista                
                 //console.log(proceso, "proceso")
 
                 // ciclos bloqueo
                 if(proceso.ciclo.length){
                     proceso.tiempoDesbloqueo = unidadDeTiempo + proceso.ciclo[0].bloqueo                    
-                    colaListos.slice(0,1)
+                    colaListos.splice(0,1)
                     colaBloqueados.push(proceso)
                 }else{
                     colaListos.splice(0,1)
                 }
             }
-
-            // // ciclos bloqueo
-            // if(proceso.ciclo.length){
-            //     proceso.tiempoDesbloqueo = unidadDeTiempo + proceso.ciclo[0].bloqueo
-            //     colaBloqueados.push(proceso)
-            // }else{
-            //     colaListos.splice(0,1)
-            // }
-
         }else{
             unidadDeTiempo++    // no tengo procesos listos, pero si bloqueados - cuento una unidad de tiempo
         }
@@ -104,7 +100,6 @@ function(procesos /* array */) {
                 return p.tiempoDesbloqueo > unidadDeTiempo
             }
         )
-
     }
     
     return {
