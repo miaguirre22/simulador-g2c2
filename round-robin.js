@@ -23,73 +23,96 @@ function(procesos /* array */) {
     var unidadDeTiempo = 0
     var colaListos = procesos.filter(p => p.ta == unidadDeTiempo)
     var colaFuturos = procesos.filter(p => p.ta > unidadDeTiempo)    
+    var procesoEnEjecucion
     var colaBloqueados = []
     var lineaDeTiempoProcesos = []
     var quantum = 4
-    
+    console.log("Algoritmo de planificación Round Robin")    
+
     while((colaListos.length !== 0) || (colaBloqueados.length !== 0)){
         
+        /**
+         * controlamos si un proceso llega a la memoria
+         */
+        colaFuturos.forEach(p => {
+            if(p.ta === unidadDeTiempo) {
+                colaListos.push(p)
+            }
+        })
+
+        colaFuturos = colaFuturos.filter(p => {
+            return p.ta > unidadDeTiempo
+        })
+
         if(colaListos.length){
+            
+            unidadDeTiempo++
+            
             // // orden en base a el tiempo de arribo
             // colaListos.sort((a,b) => {
             //     if(a.ta < b.ta) return -1
             // })
             //console.log(colaListos)
             
-            var proceso = colaListos[0]
+            var procesoEnEjecucion = colaListos[0]
+
+            procesoEnEjecucion.ciclo[0].irrupcion--
+
+            if(lineaDeTiempoProcesos[lineaDeTiempoProcesos.length - 1] === procesoEnEjecucion.id){
+                lineaDeTiempoProcesos.push(procesoEnEjecucion.id)
+            }
+
+
 
             // quantum - ciclo irrupccion            
-            if(proceso.ciclo[0].irrupcion >= quantum){
-                unidadDeTiempo += quantum
-                proceso.ciclo[0].irrupcion -= quantum
-                lineaDeTiempoProcesos.push(proceso.id)
-                // lo saco de la cola de listos y lo coloco al final
-                colaListos.splice(0,1)
-                colaListos[colaListos.length] = proceso
-                //colaListos.splice(colaListos.length,0,proceso)
-                //console.log(colaListos, "cola")
-
+            if(procesoEnEjecucion.ciclo[0].irrupcion == quantum){
+                //if(procesoEnEjecucion.ciclo[0].irrupcion >= quantum){
+                    unidadDeTiempo += quantum
+                    procesoEnEjecucion.ciclo[0].irrupcion -= quantum
+                    lineaDeTiempoProcesos.push(procesoEnEjecucion.id)
+                    // lo saco de la cola de listos y lo coloco al final
+                    colaListos.splice(0,1)
+                    colaListos[colaListos.length] = procesoEnEjecucion
+                    //colaListos.splice(colaListos.length,0,procesoEnEjecucion)
+                    //console.log(colaListos, "cola")
+    
             }else{
-                unidadDeTiempo += proceso.ciclo[0].irrupcion
+                unidadDeTiempo += procesoEnEjecucion.ciclo[0].irrupcion
                 
-                if(lineaDeTiempoProcesos[lineaDeTiempoProcesos.length - 1] == proceso.id){
-                    lineaDeTiempoProcesos.push(proceso.id)
-                }
-                
-                proceso.ciclo.splice(0,1)   // saco el ciclo de la lista                
-                //console.log(proceso, "proceso")
+                procesoEnEjecucion.ciclo.splice(0,1)   // saco el ciclo de la lista                
+                //console.log(procesoEnEjecucion, "proceso")
 
                 // ciclos bloqueo
-                if(proceso.ciclo.length){
-                    proceso.tiempoDesbloqueo = unidadDeTiempo + proceso.ciclo[0].bloqueo                    
+                if(procesoEnEjecucion.ciclo.length){
+                    procesoEnEjecucion.tiempoDesbloqueo = unidadDeTiempo + procesoEnEjecucion.ciclo[0].bloqueo
                     colaListos.splice(0,1)
-                    colaBloqueados.push(proceso)
+                    colaBloqueados.push(procesoEnEjecucion)
                 }else{
                     colaListos.splice(0,1)
                 }
-            }
+            }            
         }else{
             unidadDeTiempo++    // no tengo procesos listos, pero si bloqueados - cuento una unidad de tiempo
         }
         
-        // cola de procesos futuros
-        colaFuturos.forEach(
-            (p) => {
-                if(p.ta <= unidadDeTiempo){
-                    colaListos.push(p)
-                }
-            }
-        )
-        colaFuturos = colaFuturos.filter(
-            p => {
-                return p.ta > unidadDeTiempo
-            }
-        )
+        // // cola de procesos futuros
+        // colaFuturos.forEach(
+        //     (p) => {
+        //         if(p.ta <= unidadDeTiempo){
+        //             colaListos.push(p)
+        //         }
+        //     }
+        // )
+        // colaFuturos = colaFuturos.filter(
+        //     p => {
+        //         return p.ta > unidadDeTiempo
+        //     }
+        // )
 
         // cola de procesos bloqueados
         colaBloqueados.forEach(
             p => {
-                if(p.tiempoDesbloqueo == unidadDeTiempo){
+                if(p.tiempoDesbloqueo <= unidadDeTiempo){
                     p.ciclo.splice(0,1)
                     colaListos.push(p)
                 }

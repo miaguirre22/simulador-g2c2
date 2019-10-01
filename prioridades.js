@@ -53,7 +53,7 @@ function(procesos /* array */) {
 
             unidadDeTiempo++
 
-            // orden en base a el tiempo de arribo
+            // orden en base a la prioridad
             colaListos.sort((a,b) => {
                 if(a.prioridad < b.prioridad) return -1
                 else return 1
