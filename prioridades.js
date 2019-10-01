@@ -2,6 +2,12 @@
  * 
  * algoritmo de planificación por prioridades
  * 
+ * 1. hacer unidad a unidad
+ * 2. en cada iteración hay que controlar si un proceso de mayor prioridad 
+ * entró a la cola de listos
+ * 3. en cada iteración hay que ir restando una unidad de irrupción o bloqueo
+ * 
+ * 
  */
 module.exports = 
 
@@ -24,41 +30,55 @@ function(procesos /* array */) {
     var unidadDeTiempo = 0
     var colaFuturos = procesos.filter(p => p.ta > unidadDeTiempo)
     var colaListos = procesos.filter(p => p.ta == unidadDeTiempo)
+    var procesoEnEjecucion
     var colaBloqueados = []
     var lineaDeTiempoProcesos = []
     
     while((colaListos.length !== 0) || (colaBloqueados.length !== 0)) {
         
+        /**
+         * controlamos si un proceso llega a la memoria
+         */
+        colaFuturos.forEach(p => {
+            if(p.ta === unidadDeTiempo) {
+                colaListos.push(p)
+            }
+        })
+
+        colaFuturos = colaFuturos.filter(p => {
+            return p.ta > unidadDeTiempo
+        })
+
         if(colaListos.length) {
+
+            unidadDeTiempo++
+
             // orden en base a el tiempo de arribo
             colaListos.sort((a,b) => {
                 if(a.prioridad < b.prioridad) return -1
                 else return 1
             })
         
-            var proceso = colaListos[0]
+            var procesoEnEjecucion = colaListos[0]
         
-            unidadDeTiempo += proceso.ciclo[0].irrupcion
-            lineaDeTiempoProcesos.push(proceso.id)
-            proceso.ciclo.splice(0,1)
-            if(proceso.ciclo.length) {
-                proceso.tiempoDesbloqueo = unidadDeTiempo + proceso.ciclo[0].bloqueo
-                colaBloqueados.push(colaListos.splice(0,1)[0])
-            } else {
-                colaListos.splice(0,1)
+            procesoEnEjecucion.ciclo[0].irrupcion--
+
+            if(lineaDeTiempoProcesos[lineaDeTiempoProcesos.length - 1] !== procesoEnEjecucion.id) {
+                lineaDeTiempoProcesos.push(procesoEnEjecucion.id)
+            }
+
+            if(procesoEnEjecucion.ciclo[0].irrupcion === 0) {
+                procesoEnEjecucion.ciclo.splice(0,1)
+                if(procesoEnEjecucion.ciclo.length) {
+                    procesoEnEjecucion.tiempoDesbloqueo = unidadDeTiempo + procesoEnEjecucion.ciclo[0].bloqueo
+                    colaBloqueados.push(colaListos.splice(0,1)[0])
+                } else {
+                    colaListos.splice(0,1)
+                }
             }
         } else {
             unidadDeTiempo++
         }
-    
-        colaFuturos.forEach((p) => {
-            if(p.ta <= unidadDeTiempo) {
-                colaListos.push(p)
-            }
-        })
-        colaFuturos = colaFuturos.filter(p => {
-            return p.ta > unidadDeTiempo
-        })
     
         colaBloqueados.forEach((p) => {
             if(p.tiempoDesbloqueo <= unidadDeTiempo) {
@@ -71,8 +91,6 @@ function(procesos /* array */) {
         })
     }
     
-    //  console.log(unidadDeTiempo)
-    //  console.log(lineaDeTiempoProcesos)
     return {
         tiempoRetorno: unidadDeTiempo,
         gantt: lineaDeTiempoProcesos
