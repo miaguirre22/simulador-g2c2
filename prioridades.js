@@ -81,7 +81,7 @@ function(procesos /* array */) {
         }
     
         colaBloqueados.forEach((p) => {
-            if(p.tiempoDesbloqueo <= unidadDeTiempo) {
+            if(p.tiempoDesbloqueo <= unidadDeTiempo) {  // podria cambiar <= por = ???
                 p.ciclo.splice(0,1)
                 colaListos.push(p)
             }
