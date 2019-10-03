@@ -34,10 +34,11 @@ function(procesos /* array */) {
             // orden en base a el tiempo de arribo
             colaListos.sort((a,b) => {
                 if(a.ta < b.ta) return -1
+                else return 1
             })
         
             var proceso = colaListos[0]
-        
+            
             unidadDeTiempo += proceso.ciclo[0].irrupcion
             lineaDeTiempoProcesos.push(proceso.id)
             proceso.ciclo.splice(0,1)
