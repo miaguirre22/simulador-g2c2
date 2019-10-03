@@ -56,9 +56,9 @@ function(procesos /* array */) {
             var procesoEnEjecucion = colaListos[0]
             
             // pone en el Gantt el ID del proceso, una sola vez
-            //if(lineaDeTiempoProcesos[lineaDeTiempoProcesos.length - 1] === procesoEnEjecucion.id){
+            if(lineaDeTiempoProcesos[lineaDeTiempoProcesos.length - 1] !== procesoEnEjecucion.id){
                 lineaDeTiempoProcesos.push(procesoEnEjecucion.id)
-            //}
+            }
 
             procesoEnEjecucion.ciclo[0].irrupcion--
             q--
