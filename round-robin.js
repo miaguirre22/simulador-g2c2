@@ -30,9 +30,10 @@ function(procesos /* array */) {
     var procesoEnEjecucion
     var colaBloqueados = []
     var lineaDeTiempoProcesos = []
-    const quantum = 4
+    var quantum = 4
     var q = quantum
-    console.log("Algoritmo de planificación Round Robin")    
+    
+    console.log("Algoritmo de planificación Round Robin - Quantum: " + quantum)    
 
     while((colaListos.length !== 0) || (colaBloqueados.length !== 0)){
         
@@ -56,12 +57,16 @@ function(procesos /* array */) {
             var procesoEnEjecucion = colaListos[0]
             
             // pone en el Gantt el ID del proceso, una sola vez
-            if(lineaDeTiempoProcesos[lineaDeTiempoProcesos.length - 1] !== procesoEnEjecucion.id){
-                lineaDeTiempoProcesos.push(procesoEnEjecucion.id)
+            if(q === quantum){
+                // // Opcion: muestra solo ID (tipo numerico)
+                // lineaDeTiempoProcesos.push(procesoEnEjecucion.id)
+                
+                // Opcion: muestra ID + Irrupcion (tipo string)
+                lineaDeTiempoProcesos.push(procesoEnEjecucion.id +"("+ procesoEnEjecucion.ciclo[0].irrupcion + ")")
             }
 
             procesoEnEjecucion.ciclo[0].irrupcion--
-            q--
+            q--            
 
             // quantum - ciclo irrupccion            
             if(procesoEnEjecucion.ciclo[0].irrupcion === 0){
@@ -75,19 +80,18 @@ function(procesos /* array */) {
                 }
                 
                 // restauro el "q" quantum
-                q = quantum
+                q = quantum                
 
             }else{
                 if(q === 0){
                     // lo saco de la cola de listos y lo coloco al final
                     colaListos.splice(0,1)
                     colaListos[colaListos.length] = procesoEnEjecucion
+                    // restauro el "q" quantum
+                    q = quantum
+                    
                 }
-
-                // restauro el "q" quantum
-                q = quantum
             }
-            
         }else{
             // no tengo procesos listos, pero si bloqueados - cuento una unidad de tiempo
             unidadDeTiempo++
