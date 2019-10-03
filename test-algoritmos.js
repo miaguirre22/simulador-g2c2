@@ -27,6 +27,8 @@ var p3 = new proceso(3, 2, 2, [
     {irrupcion: 5}
 ])
 
-const resultado = rr([p1, p2, p3])
+//const resultado = fcfs([p1, p2, p3]);
+//const resultado = prioridades([p1, p2, p3]);
+const resultado = rr([p1, p2, p3]);
 
 console.log(resultado)
