@@ -1,6 +1,7 @@
 const fcfs = require('./fcfs')
 const prioridades = require('./prioridades')
 const rr = require('./round-robin')
+const niveles = require('./colas-multinivel')
 
 proceso = function(id, ta, prioridad, ciclo) {
     this.id = id;
@@ -27,6 +28,6 @@ var p3 = new proceso(3, 2, 2, [
     {irrupcion: 5}
 ])
 
-const resultado = rr([p1, p2, p3])
+const resultado = niveles([p1, p2, p3])
 
 console.log(resultado)
