@@ -56,7 +56,8 @@ function(procesos /* array */) {
             var procesoEnEjecucion = colaListos[0]
             
             // pone en el Gantt el ID del proceso, una sola vez
-            if(lineaDeTiempoProcesos[lineaDeTiempoProcesos.length - 1] !== procesoEnEjecucion.id){
+            //if(lineaDeTiempoProcesos[lineaDeTiempoProcesos.length - 1] !== procesoEnEjecucion.id){
+            if(q === quantum){
                 lineaDeTiempoProcesos.push(procesoEnEjecucion.id)
             }
 
@@ -82,12 +83,12 @@ function(procesos /* array */) {
                     // lo saco de la cola de listos y lo coloco al final
                     colaListos.splice(0,1)
                     colaListos[colaListos.length] = procesoEnEjecucion
+                    
+                    // restauro el "q" quantum
+                    q = quantum
                 }
-
-                // restauro el "q" quantum
-                q = quantum
-            }
-            
+                
+            }            
         }else{
             // no tengo procesos listos, pero si bloqueados - cuento una unidad de tiempo
             unidadDeTiempo++
