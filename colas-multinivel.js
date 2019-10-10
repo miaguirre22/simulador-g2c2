@@ -14,10 +14,24 @@ function getProcesoCola(cola, algoritmo) {
         // debe ir al final de la cola
         // sino, resto 1 a el quantum
         if(cola.q === 0) {
-            let p = cola.procesos[0]
-            cola.procesos.splice(0,1)
-            cola.procesos[cola.procesos.length] = p
-            cola.q = cola.quantum
+            // let p = cola.procesos[0]
+            // cola.procesos.splice(0,1)
+            // cola.procesos[cola.procesos.length] = p
+            // cola.q = cola.quantum
+            
+                if(cola.prioridad === 'alta') {
+                    // ¿ esta bien el orden de las instrucciones ?
+                    cola.media.procesos.push(cola.procesos[0])                    
+                    quitarProcesoDeCola(cola.proceso[0], colas.alta.procesos)
+                    cola.prioridad = 'media'
+                } else if (cola.prioridad === 'media') {
+                    cola.baja.procesos.push(cola.procesos[0])                    
+                    quitarProcesoDeCola(cola.proceso[0], colas.media.procesos)
+                    cola.prioridad = 'baja'
+                }
+                
+                cola.q = cola.quantum            
+
         } else {
             cola.q--
         }
@@ -39,7 +53,9 @@ function(procesos) {
     var colas = {
         alta: {
             procesos: [],
-            algoritmo: "fcfs"
+            algoritmo: "round-robin",
+            quantum: 2,
+            q: 2
         },
         media: {
             procesos: [],
@@ -65,6 +81,10 @@ function(procesos) {
     
     colas.alta.procesos = procesos.filter(p => p.ta == unidadDeTiempo)
 
+    var colaAlta = []
+    var colaMedia = []
+    var colaBaja = []
+    
     while(
         (colas.alta.procesos.length     !== 0) ||
         (colas.media.procesos.length    !== 0) ||
@@ -113,25 +133,28 @@ function(procesos) {
             // pone en el Gantt el ID del proceso, una sola vez
             if(lineaDeTiempoProcesos[lineaDeTiempoProcesos.length - 1] !== procesoEnEjecucion.id) {
                 lineaDeTiempoProcesos.push(procesoEnEjecucion.id)
+                // guardo el nivel de la cola que se esta ejecutando
+                colaAlta.push(colaProcesoEnEjecucion)
             }
-            
+                        
             // si se consume el quantum multinivel, 
             // se mueve el proceso a una cola de nivel inferior: media o baja
-            if(qMultinivel === 0) {
-                if(colaProcesoEnEjecucion === 'alta') {
-                    colas.media.procesos.push(procesoEnEjecucion)
-                    procesoEnEjecucion.ta = unidadDeTiempo
-                    quitarProcesoDeCola(procesoEnEjecucion, colas[colaProcesoEnEjecucion].procesos)
-                    colaProcesoEnEjecucion = 'media'
-                } else if (colaProcesoEnEjecucion === 'media') {
-                    colas.baja.procesos.push(procesoEnEjecucion)
-                    procesoEnEjecucion.ta = unidadDeTiempo
-                    colas.media.q = colas.media.quantum
-                    quitarProcesoDeCola(procesoEnEjecucion, colas[colaProcesoEnEjecucion].procesos)
-                    colaProcesoEnEjecucion = 'baja'
-                }
-                qMultinivel = quantumMultinivel
-            }
+            // if(qMultinivel === 0) {
+            //     if(colaProcesoEnEjecucion === 'alta') {
+            //         // ¿ esta bien el orden de las instrucciones ?
+            //         colas.media.procesos.push(procesoEnEjecucion)
+            //         procesoEnEjecucion.ta = unidadDeTiempo
+            //         quitarProcesoDeCola(procesoEnEjecucion, colas[colaProcesoEnEjecucion].procesos)
+            //         colaProcesoEnEjecucion = 'media'
+            //     } else if (colaProcesoEnEjecucion === 'media') {
+            //         colas.baja.procesos.push(procesoEnEjecucion)
+            //         procesoEnEjecucion.ta = unidadDeTiempo
+            //         colas.media.q = colas.media.quantum
+            //         quitarProcesoDeCola(procesoEnEjecucion, colas[colaProcesoEnEjecucion].procesos)
+            //         colaProcesoEnEjecucion = 'baja'
+            //     }
+            //     qMultinivel = quantumMultinivel
+            // }
 
             // ciclo irrupcion de proceso
             // si completo el ciclo de irrupcion, se pasa a la cola de bloqueado
@@ -168,7 +191,8 @@ function(procesos) {
 
     return {
         tiempoRetorno: unidadDeTiempo,
-        gantt: lineaDeTiempoProcesos
+        gantt: lineaDeTiempoProcesos,
+        colaAlta: colaAlta
     }
 
 }
