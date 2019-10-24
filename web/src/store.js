@@ -15,39 +15,10 @@ export default new Vuex.Store({
       sistemaParticiones: {
           tipoParticiones: null,
           algoritmoIntercambio: null,
-          particiones: [
-              {
-                  id: 1,
-                  tamano: 0
-              },
-              {
-                  id: 2,
-                  tamano: 0
-              }
-          ]
+          particiones: []
       },
       cargaTrabajos: {
-        procesos: [
-          {
-            id: '1',
-            tamanoEnMemoria: 20,
-            tiempoArribo: 0,
-            ciclos: [
-              {
-                tipo: 'irrupcion',
-                tiempo: 5
-              },
-              {
-                tipo: 'io',
-                tiempo: 5
-              },
-              {
-                tipo: 'irrupcion',
-                tiempo: 5
-              },
-            ]
-          }
-        ]
+        procesos: []
       }
   },
   getters: {

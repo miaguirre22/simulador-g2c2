@@ -30,6 +30,9 @@ import {
   QTabPanel,
   QTabPanels,
   QInput,
+  QTable,
+  QTr,
+  QTd,
   Ripple
 } from 'quasar'
 
@@ -61,6 +64,9 @@ Vue.use(Quasar, {
     QTabPanel,
     QTabPanels,
     QInput,
+    QTable,
+    QTr,
+    QTd,
   },
   directives: {
     Ripple

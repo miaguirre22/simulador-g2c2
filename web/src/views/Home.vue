@@ -62,6 +62,60 @@
                 </div>
                 <div class="col-md-7">
                   Procesos
+                  <q-table
+                    flat
+                    bordered
+                    :data="procesos"
+                    :columns="[
+                      {
+                        name: 'idProcess',
+                        label: 'ID Proceso',
+                        align: 'center',
+                        field: row => row.id,
+                        format: val => `${val}`
+                      },
+                      {
+                        name: 'arribo',
+                        label: 'Tiempo de Arribo',
+                        align: 'center',
+                        field: row => row.tiempoArribo,
+                        format: val => `${val}`
+                      },
+                      {
+                        name: 'tamano',
+                        label: 'Tamaño',
+                        align: 'center',
+                        field: row => row.tamanoEnMemoria,
+                        format: val => `${val}`
+                      },
+                    ]"
+                    row-key="id"
+                    hide-bottom
+                  >
+                    <template v-slot:body="props">
+                      <q-tr :props="props">
+                          <q-td key="idProcess" :props="props">
+                            proceso {{ props.row.id }}
+                            <q-btn dense round flat :icon="props.expand ? 'arrow_drop_up' : 'arrow_drop_down'" @click="props.expand = !props.expand" />
+                          </q-td>
+                          <q-td key="arribo" :props="props">
+                            {{ props.row.tiempoArribo }}
+                          </q-td>
+                          <q-td key="tamano" :props="props">
+                            {{ props.row.tamanoEnMemoria }}
+                          </q-td>
+                      </q-tr>
+                      <q-tr v-show="props.expand" :props="props">
+                        <q-td colspan="100%">
+                          <span class="text-bold">ciclo de vida</span>
+                          <div v-for="(c, index) in props.row.ciclos" :key="index" class="text-left">
+                            {{ c.tipo }} - {{ c.tiempo }}
+                          </div>
+                        </q-td>
+                      </q-tr>
+                    </template>
+
+                  </q-table>
                 </div>
               </div>
             </q-tab-panel>
@@ -102,7 +156,8 @@ export default {
       'tamanoSOEnMemoria'
     ]),
     ...mapState({
-      particiones: state => state.sistemaParticiones.particiones
+      particiones: state => state.sistemaParticiones.particiones,
+      procesos: state => state.cargaTrabajos.procesos
     })
   }
 }
