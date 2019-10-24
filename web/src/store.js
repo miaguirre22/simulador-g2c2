@@ -25,12 +25,23 @@ export default new Vuex.Store({
                   tamano: 0
               }
           ]
+      },
+      memoria: {
+        particiones: []
       }
   },
   getters: {
     getField,
-    lastPartitionId({sistemaParticiones}) {
-      return sistemaParticiones.particiones.length
+    tamanoTotalParticiones({sistemaParticiones}) {
+      return sistemaParticiones.particiones.reduce((ac, c) => ac + c.tamano, 0)
+    },
+    tamanoSOEnMemoria({simuladorConfig}) {
+      if(!simuladorConfig.porcentajeUsoSO || !simuladorConfig.tamanoMemoria) return 0
+      return Math.round(simuladorConfig.tamanoMemoria * simuladorConfig.porcentajeUsoSO / 100)
+    },
+    freeSpace({simuladorConfig}, {tamanoTotalParticiones, tamanoSOEnMemoria}) {
+        if(!simuladorConfig.tamanoMemoria) return 0
+        return simuladorConfig.tamanoMemoria - tamanoSOEnMemoria - tamanoTotalParticiones
     }
   },
   mutations: {

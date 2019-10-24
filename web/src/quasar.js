@@ -25,6 +25,10 @@ import {
   QOptionGroup,
   QSeparator,
   QSlider,
+  QTab,
+  QTabs,
+  QTabPanel,
+  QTabPanels,
   Ripple
 } from 'quasar'
 
@@ -51,6 +55,10 @@ Vue.use(Quasar, {
     QOptionGroup,
     QSeparator,
     QSlider,
+    QTab,
+    QTabs,
+    QTabPanel,
+    QTabPanels,
   },
   directives: {
     Ripple

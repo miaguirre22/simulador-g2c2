@@ -11,8 +11,8 @@
                     <q-select
                         outlined
                         :options="[
-                            'asd',
-                            '123'
+                            'FCFS',
+                            'Round Robin'
                         ]"
                         v-model="algoritmo"
                         label="Algoritmo de Planificación"
@@ -30,8 +30,9 @@
                     <q-select
                         outlined
                         :options="[
-                            'asd',
-                            '123'
+                            5,
+                            10,
+                            20
                         ]"
                         v-model="porcentajeUsoSO"
                         label="Porcentaje de Uso del S.O."
