@@ -18,6 +18,14 @@ import {
   QItem,
   QItemSection,
   QItemLabel,
+  QExpansionItem,
+  QCard,
+  QCardSection,
+  QSelect,
+  QOptionGroup,
+  QSeparator,
+  QSlider,
+  Ripple
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -36,8 +44,16 @@ Vue.use(Quasar, {
     QItem,
     QItemSection,
     QItemLabel,
+    QExpansionItem,
+    QCard,
+    QCardSection,
+    QSelect,
+    QOptionGroup,
+    QSeparator,
+    QSlider,
   },
   directives: {
+    Ripple
   },
   plugins: {
   }
