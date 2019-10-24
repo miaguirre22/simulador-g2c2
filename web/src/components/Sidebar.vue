@@ -112,9 +112,88 @@
         >
         <q-card>
             <q-card-section>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, eius reprehenderit eos corrupti
-            commodi magni quaerat ex numquam, dolorum officiis modi facere maiores architecto suscipit iste
-            eveniet doloribus ullam aliquid.
+                Procesos
+                <q-list bordered separator>
+                    <q-expansion-item
+                        v-for="(proc, index) in procesos"
+                        :key="index"
+                        switch-toggle-side
+                    >
+                        <template v-slot:header>
+                            <q-item-section>
+                                <q-item-label>proceso {{ proc.id }}</q-item-label>
+                            </q-item-section>
+                            <q-item-section side>
+                                <q-btn @click="removeProceso({index})" flat dense rounded size="sm" icon="delete" />
+                            </q-item-section>
+                        </template>
+                        <q-item-section class="q-pa-sm q-gutter-sm">
+                            <q-input
+                                dense
+                                type="number"
+                                label="tiempo de arribo"
+                                v-model="proc.tiempoArribo"
+                            />
+                            <q-input
+                                dense
+                                type="number"
+                                label="tamaño del proceso"
+                                v-model="proc.tamanoEnMemoria"
+                            />
+                        </q-item-section>
+                        <q-item-section >
+                            ciclo de vida
+                            <q-list dense bordered separator>
+                                <q-item v-for="(ciclo, index) in proc.ciclos" :key="index">
+                                    <q-item-section>
+                                        <q-select
+                                                dense
+                                                :options="[
+                                                    'irrupcion',
+                                                    'io'
+                                                ]"
+                                                label="tipo"
+                                                :value="ciclo.tipo"
+                                                @input="(value) => setCiclo({
+                                                    idProceso: proc.id, 
+                                                    indexCiclo: index, 
+                                                    key: 'tipo', 
+                                                    value
+                                                })"
+                                            />
+                                    </q-item-section>
+                                    <q-item-section>
+                                        <q-input
+                                                dense
+                                                type="number"
+                                                label="tiempo"
+                                                :value="ciclo.tiempo"
+                                                @input="(value) => setCiclo({
+                                                    idProceso: proc.id, 
+                                                    indexCiclo: index, 
+                                                    key: 'tiempo', 
+                                                    value: Number(value)
+                                                })"
+                                            />
+                                    </q-item-section>
+                                    <q-item-section side>
+                                        <q-btn 
+                                            @click="removeCiclo({idProceso: proc.id,indexCiclo: index})" 
+                                            size="xs" flat dense rounded icon="delete" 
+                                        />
+                                    </q-item-section>
+                                </q-item>
+                            </q-list>
+                            <q-btn 
+                                size="xs" @click="addCiclo({idProceso: proc.id})" 
+                                label="agregar ciclo" outline class="q-mt-sm" color="primary" 
+                            />
+                        </q-item-section>
+                    </q-expansion-item>
+                </q-list>
+            </q-card-section>
+            <q-card-section>
+                <q-btn outline color="primary" @click="addProceso" class="full-width" label="agregar proceso" />
             </q-card-section>
         </q-card>
         </q-expansion-item>
@@ -154,13 +233,19 @@ export default {
             // 'sistemaParticiones.particiones',
         ]),
         ...mapMultiRowFields([
-            'sistemaParticiones.particiones'
+            'sistemaParticiones.particiones',
+            'cargaTrabajos.procesos'
         ])
     },
     methods: {
         ...mapMutations([
             'addParticion',
-            'removeParticion'
+            'removeParticion',
+            'setCiclo',
+            'removeCiclo',
+            'addCiclo',
+            'addProceso',
+            'removeProceso'
         ])
     }
 }

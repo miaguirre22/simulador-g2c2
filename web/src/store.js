@@ -26,8 +26,28 @@ export default new Vuex.Store({
               }
           ]
       },
-      memoria: {
-        particiones: []
+      cargaTrabajos: {
+        procesos: [
+          {
+            id: '1',
+            tamanoEnMemoria: 20,
+            tiempoArribo: 0,
+            ciclos: [
+              {
+                tipo: 'irrupcion',
+                tiempo: 5
+              },
+              {
+                tipo: 'io',
+                tiempo: 5
+              },
+              {
+                tipo: 'irrupcion',
+                tiempo: 5
+              },
+            ]
+          }
+        ]
       }
   },
   getters: {
@@ -54,6 +74,29 @@ export default new Vuex.Store({
       },
       removeParticion({sistemaParticiones}, idParticion) {
         sistemaParticiones.particiones.splice(idParticion - 1, 1)
+      },
+      setCiclo({cargaTrabajos}, {idProceso, indexCiclo, key, value}) {
+        cargaTrabajos.procesos.find(p=>p.id===idProceso).ciclos[indexCiclo][key] = value
+      },
+      removeCiclo({cargaTrabajos}, {idProceso, indexCiclo}) {
+        cargaTrabajos.procesos.find(p=>p.id===idProceso).ciclos.splice(indexCiclo, 1)
+      },
+      addCiclo({cargaTrabajos}, {idProceso}) {
+        cargaTrabajos.procesos.find(p=>p.id===idProceso).ciclos.push({
+          tipo: null,
+          tiempo: 0
+        })
+      },
+      addProceso({cargaTrabajos}) {
+        cargaTrabajos.procesos.push({
+          id: cargaTrabajos.procesos.length + 1,
+          tiempoArribo: 0,
+          tamanoEnMemoria: 0,
+          ciclos: []
+        })
+      },
+      removeProceso({cargaTrabajos}, {index}) {
+        cargaTrabajos.procesos.splice(index,1)
       }
   }
 })
