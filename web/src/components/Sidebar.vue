@@ -10,30 +10,19 @@
                 <div class="q-gutter-md">
                     <q-select
                         outlined
-                        :options="[
-                            'FCFS',
-                            'Round Robin'
-                        ]"
+                        :options="algoritmos"
                         v-model="algoritmo"
                         label="Algoritmo de Planificación"
                     />
                     <q-select
                         outlined
-                        :options="[
-                            24,
-                            48,
-                            128
-                        ]"
+                        :options="tamanos"
                         v-model="tamanoMemoria"
                         label="Tamaño de Memoria"
                     />
                     <q-select
                         outlined
-                        :options="[
-                            5,
-                            10,
-                            20
-                        ]"
+                        :options="porcentajes"
                         v-model="porcentajeUsoSO"
                         label="Porcentaje de Uso del S.O."
                     />
@@ -50,7 +39,7 @@
         <q-card>
             <q-card-section>
                 <q-option-group
-                    :options="particionesOptions"
+                    :options="tiposParticion"
                     type="radio"
                     v-model="tipoParticiones"
                 />
@@ -59,37 +48,23 @@
             <q-card-section>
                 <q-select
                     outlined
-                    :options="[
-                        'best fit',
-                        'worst fit',
-                        'first fit'
-                    ]"
+                    :options="algoritmosIntercambio"
                     v-model="algoritmoIntercambio"
                     label="Algoritmo de Intercambio"
                 />
             </q-card-section>
-            <q-card-section>
+            <q-card-section v-if="tipoParticiones === 'fijas'">
                 <q-list bordered separator>
                     <q-item dense v-for="(part, index) in particiones" :key="index">
                         <q-item-section>
                         <q-item-label overline>P{{ part.id }}</q-item-label>
                             <div>
-                                <!-- <q-select
-                                    :options="[
-                                        'best fit',
-                                        'worst fit',
-                                        'first fit'
-                                    ]"
-                                    dense
-                                    v-model="algoritmoIntercambio"
-                                    label="Tamaño"
-                                /> -->
                                 <q-slider
                                     @change="val=>part.tamano=val"
                                     :value="part.tamano"
                                     :min="0"
                                     :max="tamanoMemoria"
-                                    :step="4"
+                                    :step="1"
                                     label
                                     color="light-blue"
                                 />
@@ -203,16 +178,12 @@
 
 <script>
 
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import { mapFields, mapMultiRowFields } from 'vuex-map-fields'
 
 export default {
     data() {
         return {
-            particionesOptions: [
-                { label: 'Particiones Fijas', value: 'fijas' },
-                { label: 'Particiones Variables', value: 'variables' }
-            ]
         }
     },
     computed: {
@@ -230,12 +201,19 @@ export default {
             'simuladorConfig.porcentajeUsoSO',
             'sistemaParticiones.tipoParticiones',
             'sistemaParticiones.algoritmoIntercambio',
-            // 'sistemaParticiones.particiones',
         ]),
         ...mapMultiRowFields([
             'sistemaParticiones.particiones',
             'cargaTrabajos.procesos'
-        ])
+        ]),
+        ...mapState({
+            'algoritmos': state => state.simuladorConfig.algoritmos,
+            'tamanos': state => state.simuladorConfig.tamanos,
+            'porcentajes': state => state.simuladorConfig.porcentajes,
+            'tiposParticion': state => state.sistemaParticiones.tiposParticion,
+            'algoritmosIntercambio': state => state.sistemaParticiones.algoritmosIntercambio,
+        })
+
     },
     methods: {
         ...mapMutations([

@@ -44,7 +44,7 @@
                     </q-item>
                     <q-item v-for="(part, index) in particiones" :key="index">
                         <q-item-section>
-                          P{{part.id}}
+                          Partición {{part.id}}
                         </q-item-section>
                         <q-item-section side>
                           {{part.tamano}} KB
