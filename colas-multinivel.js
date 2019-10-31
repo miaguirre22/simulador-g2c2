@@ -19,21 +19,25 @@ function getProcesoCola(cola, algoritmo) {
             // cola.procesos[cola.procesos.length] = p
             // cola.q = cola.quantum
             
-                if(cola.prioridad === 'alta') {
-                    // ¿ esta bien el orden de las instrucciones ?
-                    cola.media.procesos.push(cola.procesos[0])                    
-                    quitarProcesoDeCola(cola.proceso[0], colas.alta.procesos)
-                    cola.prioridad = 'media'
-                } else if (cola.prioridad === 'media') {
-                    cola.baja.procesos.push(cola.procesos[0])                    
-                    quitarProcesoDeCola(cola.proceso[0], colas.media.procesos)
-                    cola.prioridad = 'baja'
-                }
-                
-                cola.q = cola.quantum            
+            //quantumMultinivel = cola.quantum
+
+            if(cola.prioridad === 'alta') {
+                // ¿ esta bien el orden de las instrucciones ?
+                cola.media.procesos.push(cola.procesos[0])                    
+                quitarProcesoDeCola(cola.proceso[0], colas.alta.procesos)
+                cola.prioridad = 'media'
+            } else if (cola.prioridad === 'media') {
+                cola.baja.procesos.push(cola.procesos[0])                    
+                quitarProcesoDeCola(cola.proceso[0], colas.media.procesos)
+                cola.prioridad = 'baja'
+            }
+            
+            cola.q = cola.quantum
+            //qMultinivel = cola.quantum
 
         } else {
             cola.q--
+            //qMultinivel--
         }
         proceso = cola.procesos[0]
     }
@@ -127,16 +131,22 @@ function(procesos) {
                 procesoEnEjecucion = getProcesoCola(colas.baja, colas.baja.algoritmo)
             }
 
+            // pone en el Gantt el ID del proceso, una sola vez
+            //if(lineaDeTiempoProcesos[lineaDeTiempoProcesos.length - 1] !== procesoEnEjecucion.id){
+            //if(qMultinivel === quantumMultinivel){
+            if(lineaDeTiempoProcesos[lineaDeTiempoProcesos.length - 1] !== procesoEnEjecucion.id){
+                // // Opcion: muestra solo ID (tipo numerico)
+                // lineaDeTiempoProcesos.push(procesoEnEjecucion.id)
+                
+                // Opcion: muestra ID + Irrupcion (tipo string)
+                lineaDeTiempoProcesos.push(procesoEnEjecucion.id +"("+ procesoEnEjecucion.ciclo[0].irrupcion + ")")
+
+                colaAlta.push(colaProcesoEnEjecucion)
+            }
+            
             procesoEnEjecucion.ciclo[0].irrupcion--
             qMultinivel--
 
-            // pone en el Gantt el ID del proceso, una sola vez
-            if(lineaDeTiempoProcesos[lineaDeTiempoProcesos.length - 1] !== procesoEnEjecucion.id) {
-                lineaDeTiempoProcesos.push(procesoEnEjecucion.id)
-                // guardo el nivel de la cola que se esta ejecutando
-                colaAlta.push(colaProcesoEnEjecucion)
-            }
-                        
             // si se consume el quantum multinivel, 
             // se mueve el proceso a una cola de nivel inferior: media o baja
             // if(qMultinivel === 0) {
@@ -170,7 +180,7 @@ function(procesos) {
                     quitarProcesoDeCola(procesoEnEjecucion, colas[colaProcesoEnEjecucion].procesos)
                 }
                 // restauro el quantum multinivel
-                qMultinivel = quantumMultinivel
+                //qMultinivel = quantumMultinivel
             } 
 
         }
