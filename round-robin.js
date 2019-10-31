@@ -51,14 +51,18 @@ function(procesos /* array */) {
 
         if(colaListos.length){
             
-            unidadDeTiempo++            
+            unidadDeTiempo++
             
             var procesoEnEjecucion = colaListos[0]
             
             // pone en el Gantt el ID del proceso, una sola vez
             //if(lineaDeTiempoProcesos[lineaDeTiempoProcesos.length - 1] !== procesoEnEjecucion.id){
             if(q === quantum){
-                lineaDeTiempoProcesos.push(procesoEnEjecucion.id)
+                // // Opcion: muestra solo ID (tipo numerico)
+                // lineaDeTiempoProcesos.push(procesoEnEjecucion.id)
+                
+                // Opcion: muestra ID + Irrupcion (tipo string)
+                lineaDeTiempoProcesos.push(procesoEnEjecucion.id +"("+ procesoEnEjecucion.ciclo[0].irrupcion + ")")
             }
 
             procesoEnEjecucion.ciclo[0].irrupcion--
