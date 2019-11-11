@@ -4,6 +4,7 @@
         expand-separator
         icon="settings"
         label="Configuración del Simulador"
+        group="sidebar"
         >
         <q-card>
             <q-card-section>
@@ -35,6 +36,7 @@
         expand-separator
         icon="settings"
         label="Sistema de Particiones"
+        group="sidebar"
         >
         <q-card>
             <q-card-section>
@@ -84,6 +86,7 @@
         expand-separator
         icon="settings"
         label="Carga de Trabajos"
+        group="sidebar"
         >
         <q-card>
             <q-card-section>
