@@ -19,7 +19,7 @@
                     {{part.tamano}} KB
                 </q-item-section>
             </q-item>
-            <q-item>
+            <q-item v-if="freeSpace">
                 <q-item-section>
                 Espacio Libre
                 </q-item-section>
