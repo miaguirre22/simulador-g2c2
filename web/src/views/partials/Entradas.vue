@@ -98,7 +98,7 @@ export default {
       'tamanoSOEnMemoria'
     ]),
     ...mapState({
-      particiones: state => state.sistemaParticiones.particiones,
+      particiones: state => state.memoria.particiones,
       procesos: state => state.cargaTrabajos.procesos
     })
   }

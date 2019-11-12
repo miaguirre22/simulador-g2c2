@@ -20,7 +20,7 @@ export default new Vuex.Store({
           porcentajes: [5, 10, 15, 20],
           porcentajeUsoSO: null,
       },
-      sistemaParticiones: {
+      memoria: {
           tiposParticion: [
               { label: 'Particiones Fijas', value: 'fijas' },
               { label: 'Particiones Variables', value: 'variables' }
@@ -32,12 +32,21 @@ export default new Vuex.Store({
       },
       cargaTrabajos: {
         procesos: []
+      },
+      colaNuevos: {
+        procesos: []
+      },
+      colaListos: {
+        procesos: []
+      },
+      colaBloqueados: {
+        procesos: []
       }
   },
   getters: {
     getField,
-    tamanoTotalParticiones({sistemaParticiones}) {
-      return sistemaParticiones.particiones.reduce((ac, c) => ac + c.tamano, 0)
+    tamanoTotalParticiones({memoria}) {
+      return memoria.particiones.reduce((ac, c) => ac + c.tamano, 0)
     },
     tamanoSOEnMemoria({simuladorConfig}) {
       if(!simuladorConfig.porcentajeUsoSO || !simuladorConfig.tamanoMemoria) return 0
@@ -50,14 +59,14 @@ export default new Vuex.Store({
   },
   mutations: {
       updateField,
-      addParticion({sistemaParticiones}) {
-        sistemaParticiones.particiones.push({
-          id: sistemaParticiones.particiones.length + 1,
+      addParticion({memoria}) {
+        memoria.particiones.push({
+          id: memoria.particiones.length + 1,
           tamano: 0
         })
       },
-      removeParticion({sistemaParticiones}, idParticion) {
-        sistemaParticiones.particiones.splice(idParticion - 1, 1)
+      removeParticion({memoria}, idParticion) {
+        memoria.particiones.splice(idParticion - 1, 1)
       },
       setCiclo({cargaTrabajos}, {idProceso, indexCiclo, key, value}) {
         cargaTrabajos.procesos.find(p=>p.id===idProceso).ciclos[indexCiclo][key] = value
