@@ -12,5 +12,8 @@ export default {
     freeSpace({simuladorConfig}, {tamanoTotalParticiones, tamanoSOEnMemoria}) {
         if(!simuladorConfig.tamanoMemoria) return 0
         return simuladorConfig.tamanoMemoria - tamanoSOEnMemoria - tamanoTotalParticiones
+    },
+    partitionsAvailable({memoria}) {
+      return !!(memoria.particiones.find(p => p.libre))
     }
   }

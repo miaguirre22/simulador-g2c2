@@ -5,10 +5,13 @@ import Store from "../../store/index"
  */
 export default (state) => {
     if(state.sistemaParticiones.tipoParticiones === 'variables') {
-        state.memoria.particiones = [{libre: true, space: Store.getters.freeSpace}]
+        state.memoria.particiones = [
+            {id: 1, libre: true, space: Store.getters.freeSpace}
+        ]
     } else {
-        state.memoria.particiones = state.sistemaParticiones.particiones.map(p => {
+        state.memoria.particiones = state.sistemaParticiones.particiones.map((p, index) => {
             return {
+                id: index + 1,
                 libre: true,
                 space: p.tamano
             }

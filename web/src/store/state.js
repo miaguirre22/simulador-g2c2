@@ -31,10 +31,12 @@ export default {
     colaNuevos: {
       procesos: []
     },
-    colaListos: {
-      procesos: []
-    },
     colaBloqueados: {
       procesos: []
+    },
+    histories: {
+      memoria: [],
+      colaNuevos: [],
+      colaBloqueados: []
     }
 }
