@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { getField, updateField } from 'vuex-map-fields';
-
+import runner from './algorithms/runner'
 
 Vue.use(Vuex)
 
@@ -41,7 +41,7 @@ export default new Vuex.Store({
       },
       colaBloqueados: {
         procesos: []
-      }
+      },
   },
   getters: {
     getField,
@@ -59,6 +59,7 @@ export default new Vuex.Store({
   },
   mutations: {
       updateField,
+      runner,
       addParticion({memoria}) {
         memoria.particiones.push({
           id: memoria.particiones.length + 1,

@@ -2,7 +2,7 @@
   <q-page>
     <div class="fit row q-pa-sm q-gutter-sm">
       <div class="col">
-        <q-btn class="full-width" outline color="primary">INICIAR</q-btn>
+        <q-btn class="full-width" @click="run" outline color="primary">INICIAR</q-btn>
       </div>
       <div class="col">
         <q-btn class="full-width" outline color="primary">RESTAURAR</q-btn>
@@ -52,7 +52,7 @@
 </style>
 
 <script>
-
+import { mapMutations } from 'vuex'
 export default {
   name: 'PageHome',
   data() {
@@ -65,6 +65,11 @@ export default {
   components: {
       Entradas: () => import('./partials/Entradas.vue'),
       Procesamiento: () => import('./partials/Procesamiento.vue')
+  },
+  methods: {
+    ...mapMutations({
+      run: 'runner'
+    })
   }
 }
 </script>
