@@ -202,19 +202,19 @@ export default {
             'simuladorConfig.algoritmo',
             'simuladorConfig.tamanoMemoria',
             'simuladorConfig.porcentajeUsoSO',
-            'memoria.tipoParticiones',
-            'memoria.algoritmoIntercambio',
+            'sistemaParticiones.tipoParticiones',
+            'sistemaParticiones.algoritmoIntercambio',
         ]),
         ...mapMultiRowFields([
-            'memoria.particiones',
+            'sistemaParticiones.particiones',
             'cargaTrabajos.procesos'
         ]),
         ...mapState({
             'algoritmos': state => state.simuladorConfig.algoritmos,
             'tamanos': state => state.simuladorConfig.tamanos,
             'porcentajes': state => state.simuladorConfig.porcentajes,
-            'tiposParticion': state => state.memoria.tiposParticion,
-            'algoritmosIntercambio': state => state.memoria.algoritmosIntercambio,
+            'tiposParticion': state => state.sistemaParticiones.tiposParticion,
+            'algoritmosIntercambio': state => state.sistemaParticiones.algoritmosIntercambio,
         })
 
     },
