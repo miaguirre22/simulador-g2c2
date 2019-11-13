@@ -1,3 +1,4 @@
+import boostrapper from './memory/boostrapper.js'
 import plp from './memory/plp.js'
 import pmp from './memory/pmp.js'
 import pcp from './memory/pcp.js'
@@ -7,10 +8,11 @@ import pcp from './memory/pcp.js'
  * recibe state como parámetro
  */
 export default function runner(state) {
+    boostrapper(state)
     let counter = 0
-    plp(state, counter)
-    pmp(state, counter)
-    pcp(state, counter)
-    // do {
-    // } while(true)
+    do {
+        plp(state, counter)
+        pmp(state, counter)
+        pcp(state, counter)
+    } while(false)
 }
