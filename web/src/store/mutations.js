@@ -30,6 +30,7 @@ export default {
         id: cargaTrabajos.procesos.length + 1,
         tiempoArribo: 0,
         tamanoEnMemoria: 0,
+        prioridad: 0,
         ciclos: []
       })
     },

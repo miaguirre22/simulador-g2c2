@@ -57,7 +57,7 @@ export default {
   name: 'PageHome',
   data() {
     return {
-      tab: 'procesamiento'
+      tab: 'entradas'
     }
   },
   computed: {

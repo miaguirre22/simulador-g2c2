@@ -118,6 +118,12 @@
                                 label="tamaño del proceso"
                                 v-model="proc.tamanoEnMemoria"
                             />
+                            <q-input
+                                dense
+                                type="number"
+                                label="prioridad"
+                                v-model="proc.prioridad"
+                            />
                         </q-item-section>
                         <q-item-section >
                             ciclo de vida

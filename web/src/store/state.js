@@ -37,6 +37,7 @@ export default {
     histories: {
       memoria: [],
       colaNuevos: [],
-      colaBloqueados: []
+      colaBloqueados: [],
+      procesos: []
     }
 }

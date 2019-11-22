@@ -17,4 +17,11 @@ export default (state) => {
             }
         })
     }
+
+    state.histories = {
+        memoria: [],
+        colaNuevos: [],
+        colaBloqueados: [],
+        procesos: []
+    }
 }
