@@ -77,7 +77,7 @@ function getProcesoPrioridades(procesos) {
     return procesos[0]
 }
 
-const quantum = 2
+const quantum = 4
 let q = quantum
 let i = 0
 function getProcesoRoundRobin(procesos, particiones) {
@@ -99,7 +99,9 @@ function getProcesoRoundRobin(procesos, particiones) {
             }
             return proceso
         } else {
-            if(++i === particiones.length) {
+            i++
+            q = quantum
+            if(i === particiones.length) {
                 i = 0
             }
         }
