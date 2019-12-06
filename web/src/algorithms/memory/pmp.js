@@ -22,7 +22,18 @@ export default (state, counter) => {
             } else {
                 Store.state.resultados.procesos.push({
                     id: p.id,
-                    tiempoRetorno: counter - p.tiempoArribo
+                    tiempoRetorno: counter - p.tiempoArribo,
+                    tiempoEspera: (() => {
+                        // se calcula el tiempo de espera como
+                        // tiempoRetorno - tiempoIrrupcionTotal
+                        let proc = state.cargaTrabajos.procesos.find(t => t.id === p.id)
+                        let sumIrrupciones = proc.ciclos.reduce((ac,c) => {
+                            if(c.tipo === 'irrupcion') {
+                                return ac + c.tiempo
+                            }
+                        }, 0)
+                        return counter - p.tiempoArribo - sumIrrupciones
+                    })()
                 })
             }
             

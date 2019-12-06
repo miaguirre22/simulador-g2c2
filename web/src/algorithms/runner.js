@@ -4,6 +4,7 @@ import pmp from './memory/pmp.js'
 import pcp from './memory/pcp.js'
 import exec from './cpu/exec.js'
 import cleaner from './memory/cleaner.js'
+import saveRun from './varios/saveRun.js'
 
 /**
  * MUTATION
@@ -25,4 +26,5 @@ export default function runner(state) {
         state.memoria.particiones.filter(p=>!p.libre).length
     )
     cleaner(state)
+    saveRun(state)
 }

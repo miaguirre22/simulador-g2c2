@@ -59,7 +59,6 @@
                 },
             ]"
             row-key="id"
-            hide-bottom
             >
             <template v-slot:body="props">
                 <q-tr :props="props">

@@ -36,5 +36,11 @@ export default {
     },
     removeProceso({cargaTrabajos}, {index}) {
       cargaTrabajos.procesos.splice(index,1)
+    },
+    setCorrida(state, data) {
+      console.log("corriendo")
+      state.cargaTrabajos = data.cargaTrabajos
+      state.simuladorConfig = data.simuladorConfig
+      state.sistemaParticiones = data.sistemaParticiones
     }
 }
