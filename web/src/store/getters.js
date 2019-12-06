@@ -13,6 +13,7 @@ export default {
         if(!simuladorConfig.tamanoMemoria) return 0
         return simuladorConfig.tamanoMemoria - tamanoSOEnMemoria - tamanoTotalParticiones
     },
+    // Boolean
     partitionsAvailable({memoria}) {
       return !!(memoria.particiones.find(p => p.libre))
     }

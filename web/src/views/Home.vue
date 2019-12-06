@@ -38,8 +38,7 @@
             </q-tab-panel>
 
             <q-tab-panel name="movies">
-              <div class="text-h6">Movies</div>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                <salidas />
             </q-tab-panel>
           </q-tab-panels>
         </q-card>
@@ -64,7 +63,8 @@ export default {
   },
   components: {
       Entradas: () => import('./partials/Entradas.vue'),
-      Procesamiento: () => import('./partials/Procesamiento.vue')
+      Procesamiento: () => import('./partials/Procesamiento.vue'),
+      Salidas: () => import('./partials/Salidas.vue')
   },
   methods: {
     ...mapMutations({

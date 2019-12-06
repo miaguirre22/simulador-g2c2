@@ -1,3 +1,6 @@
+/**
+ * ordena las particiones por ID.
+ */
 export default (state) => {
     state.histories.memoria.forEach(m => {
         m.snapshot.particiones.sort((a, b) => {

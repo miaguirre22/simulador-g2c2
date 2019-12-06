@@ -16,7 +16,6 @@ export default function runner(state) {
         plp(state, counter)
         pmp(state, counter)
         pcp(state, counter)
-        console.log('what')
         exec(state, counter)
         counter++
     } while(
@@ -24,8 +23,6 @@ export default function runner(state) {
         state.colaNuevos.procesos.length ||
         state.cargaTrabajos.procesos.filter(p => !p.agregado).length ||
         state.memoria.particiones.filter(p=>!p.libre).length
-        // state.memoria.particiones
-        // counter < 4
     )
     cleaner(state)
 }

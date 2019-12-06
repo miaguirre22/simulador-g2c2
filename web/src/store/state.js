@@ -4,7 +4,7 @@ export default {
           "FCFS",
           "prioridades",
           "round robin",
-          "colas multinivel"
+          "colas multinivel",
         ],
         algoritmo: null,
         tamanos: [32, 64, 128, 256, 512, 1024],
@@ -39,5 +39,9 @@ export default {
       colaNuevos: [],
       colaBloqueados: [],
       procesos: []
+    },
+    resultados: {
+      procesos: []
     }
+
 }

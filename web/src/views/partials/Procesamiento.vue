@@ -11,12 +11,6 @@
     <div class="fit row">
         <p style="display: block; width: 100%">memoria</p>
 
-        <!-- <span style="display: block; width: 100%" v-for="(i, index) in histories.memoria" :key="index">
-            {{ index }}: 
-            <span v-for="(j, index2) in i.snapshot.particiones" :key="index2">
-                particion {{ j.id }} -> <b>{{ j.proceso ? j.proceso.id : 'X' }} </b>
-            </span>
-        </span> -->
         <div class="fit row">
             <q-list 
                 v-for="(i, index) in histories.memoria" 
@@ -24,12 +18,24 @@
                 bordered separator
                 
             >
+                <q-item>
+                    {{ index }}
+                </q-item>
                 <q-item v-for="(part, index2) in i.snapshot.particiones" :key="index2">
                     <q-item-section>
-                        Partición {{part.id}}
+                        <q-item-label overline>
+                            Partición {{part.id}}
+                        </q-item-label>
+                        <q-item-label caption>
+                            {{ part.space }} KB
+                        </q-item-label>
                     </q-item-section>
                     <q-item-section side>
-                        {{ part.proceso ? `proceso ` + part.proceso.id : '' }}
+                        <q-item-label>
+                            <span class="text-primary">
+                                {{ part.proceso ? `P` + part.proceso.id : '' }}
+                            </span>
+                        </q-item-label>
                     </q-item-section>
                 </q-item>
             </q-list>
@@ -55,14 +61,6 @@ export default {
                 if(index === 0) {
                     array.push(m)
                 } else {
-                     console.log(m.snapshot.particiones.map(p => {
-                         console.log(p)
-                         if(p.hasOwnProperty('proceso') && p.proceso) {
-                            return p.proceso.id
-                         } else {
-                             return null
-                         }
-                     }))
                     let p1 = 
                     m.snapshot.particiones.map(p => {
                         if(p.hasOwnProperty('proceso') && p.proceso) {

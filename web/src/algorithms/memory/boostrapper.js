@@ -24,4 +24,8 @@ export default (state) => {
         colaBloqueados: [],
         procesos: []
     }
+
+    Store.state.resultados = {
+        procesos: []
+    }
 }

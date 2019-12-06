@@ -4,17 +4,23 @@
  * 
  */
 export default (state, counter) => {
+
+    // se toman los procesos listos para ejecutar
     const procesosListos = state.memoria.particiones
     .filter(p => !p.libre)
     .map(p => p.proceso)
 
     // console.log(procesosListos)
     if(procesosListos.length) {
+
+        // se obtiene el proceso a ejecutar
         let proceso = getProceso(
             state.simuladorConfig.algoritmo,
             procesosListos,
             state.memoria.particiones
-            )
+        )
+
+
         if(proceso.ciclos[0].tipo === 'irrupcion' && proceso.ciclos[0].tiempo > 0) {
             proceso.ciclos[0].tiempo--
         }
@@ -24,6 +30,8 @@ export default (state, counter) => {
             snapshot: proceso.id 
         })
     } else {
+        // no hay ningún proceso listo para ejecutar
+
         // history
         state.histories.procesos.push({
             time: counter,
@@ -48,16 +56,19 @@ function getProceso(algoritmo, procesos, particiones) {
     }
 }
 
+
 function getProcesoFCFS(procesos) {
+    // se ordena por id
     procesos.sort((a,b) => {
-        console.log(a, b)
-        if(a.id - b.id < 0) return 1
-        else return -1
+        return a.id - b.id
     })
+    
+    // se ordena por tiempo de llegada a la cola de listos.
+    // en el caso que 2 procesos tengan tiempos de llegada iguales, 
+    // se ordena por id.
+    
     procesos.sort((a,b) => {
-        console.log(a, b)
-        if(a.tiempoArriboListos <= b.tiempoArriboListos) return -1
-        else return 1
+        return a.tiempoArriboListos - b.tiempoArriboListos
     })
 
     return procesos[0]
@@ -66,12 +77,15 @@ function getProcesoFCFS(procesos) {
 
 function getProcesoPrioridades(procesos) {
     procesos.sort((a,b) => {
-        if(a.id - b.id < 0) return 1
-        else return -1
+        return a.id - b.id
     })
+
+    // se ordena por prioridad de los procesos.
+    // en el caso que 2 procesos tengan prioridades iguales, 
+    // se ordena por id.
+
     procesos.sort((a,b) => {
-        if(a.prioridad <= b.prioridad) return 1
-        else return -1
+        return a.prioridad - b.prioridad
     })
 
     return procesos[0]
@@ -80,6 +94,7 @@ function getProcesoPrioridades(procesos) {
 const quantum = 4
 let q = quantum
 let i = 0
+let pid = null
 function getProcesoRoundRobin(procesos, particiones) {
     particiones.sort((p1, p2) => {
         if(p1.id - p2.id < 0) return -1
@@ -87,6 +102,13 @@ function getProcesoRoundRobin(procesos, particiones) {
      })
 
      let proceso = null
+
+    // //  casos en los que el proceso no consume todo el quantum
+    // if(!particiones[i].libre && pid != particiones[i].proceso.id) {
+    //     q = quantum
+    //     pid = particiones[i].proceso.id
+    // }
+
     do {
         if(!particiones[i].libre) {
             q--
@@ -99,9 +121,8 @@ function getProcesoRoundRobin(procesos, particiones) {
             }
             return proceso
         } else {
-            i++
             q = quantum
-            if(i === particiones.length) {
+            if(++i === particiones.length) {
                 i = 0
             }
         }
