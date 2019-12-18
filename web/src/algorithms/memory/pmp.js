@@ -42,7 +42,8 @@ export default (state, counter) => {
                                 return ac + c.tiempo
                             } else return 0
                         }, 0)
-                        return counter - p.tiempoArribo - sumIrrupciones
+                        let tiempoEspera = counter - p.tiempoArribo - sumIrrupciones
+                        return tiempoEspera < 0 ? 0 : tiempoEspera
                     })()
                 })
 
