@@ -7,6 +7,7 @@ export default {
           "colas multinivel",
         ],
         algoritmo: null,
+        quantum: null,
         tamanos: [32, 64, 128, 256, 512, 1024],
         tamanoMemoria: null,
         porcentajes: [5, 10, 15, 20],

@@ -15,6 +15,13 @@
                         v-model="algoritmo"
                         label="Algoritmo de Planificación"
                     />
+                    <q-input
+                        outlined
+                        v-if="algoritmo === 'round robin'"
+                        type="number"
+                        v-model="quantum"
+                        label="quantum"
+                    />
                     <q-select
                         outlined
                         :options="tamanos"
@@ -196,16 +203,9 @@ export default {
         }
     },
     computed: {
-        // algoritmo: {
-        //     get() {
-        //         return this.$store.state.simuladorConfig.algoritmo
-        //     },
-        //     set(val) {
-        //         this.setAlgoritmo(val)
-        //     }
-        // }
         ...mapFields([
             'simuladorConfig.algoritmo',
+            'simuladorConfig.quantum',
             'simuladorConfig.tamanoMemoria',
             'simuladorConfig.porcentajeUsoSO',
             'sistemaParticiones.tipoParticiones',

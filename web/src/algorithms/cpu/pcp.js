@@ -19,9 +19,9 @@ export default (state, counter) => {
         let proceso = getProceso(
             state.simuladorConfig.algoritmo,
             procesosListos,
-            state.memoria.particiones
+            state.simuladorConfig.quantum,
+            counter
         )
-
 
         if(proceso.ciclos[0].tipo === 'irrupcion' && proceso.ciclos[0].tiempo > 0) {
             proceso.ciclos[0].tiempo--
@@ -44,7 +44,7 @@ export default (state, counter) => {
 }
 
 
-function getProceso(algoritmo, procesos, particiones) {
+function getProceso(algoritmo, procesos, quantum, counter) {
     switch (algoritmo) {
         case 'FCFS':
             return getProcesoFCFS(procesos)
@@ -53,7 +53,7 @@ function getProceso(algoritmo, procesos, particiones) {
             return getProcesoPrioridades(procesos)
             break
         case 'round robin':
-            return getProcesoRoundRobin(procesos, particiones)
+            return getProcesoRoundRobin(quantum, procesos, counter)
             break
     }
 }
@@ -93,38 +93,46 @@ function getProcesoPrioridades(procesos) {
     return procesos[0]
 }
 
-const quantum = 4
-let q = quantum
+let q = null
 let i = 0
 let pid = null
-function getProcesoRoundRobin(procesos, particiones) {
-    particiones.sort((p1, p2) => {
+function getProcesoRoundRobin(quantum, procesos, counter) {
+    if(counter === 0) {
+        q = quantum
+    }
+
+    procesos.sort((p1, p2) => {
         return p1.id - p2.id
-     })
+    })
 
-     let proceso = null
+    let proceso = null
+    
+    // casos en los que el índice supera el tamaño de la cola de listos. 
+    if(i >= procesos.length) {
+        i = 0
+    }
 
-    // //  casos en los que el proceso no consume todo el quantum
-    if(!particiones[i].libre && pid != particiones[i].proceso.id) {
+    //  casos en los que el proceso no consume todo el quantum
+    if(pid != procesos[i].id) {
         q = quantum
     }
 
     do {
-        if(!particiones[i].libre) {
+        if(i < procesos.length) {
             q--
-            proceso = particiones[i].proceso
+            proceso = procesos[i]
             // se setea el pid del proceso que se está por ejecutar
-            pid = particiones[i].proceso.id
+            pid = procesos[i].id
             if(q === 0) {
                 q = quantum
-                if(++i === particiones.length) {
+                if(++i === procesos.length) {
                     i = 0
                 }
             }
             return proceso
         } else {
             q = quantum
-            if(++i === particiones.length) {
+            if(++i === procesos.length) {
                 i = 0
             }
         }
