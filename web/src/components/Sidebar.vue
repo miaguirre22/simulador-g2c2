@@ -128,7 +128,7 @@
                             <q-input
                                 dense
                                 type="number"
-                                label="prioridad"
+                                label="prioridad (menor número, mayor prioridad)"
                                 v-model="proc.prioridad"
                             />
                         </q-item-section>
