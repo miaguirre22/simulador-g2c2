@@ -34,6 +34,9 @@ export default {
     colaBloqueados: {
       procesos: []
     },
+    colaListos: {
+      procesos: []
+    },
     histories: {
       memoria: [],
       colaNuevos: [],

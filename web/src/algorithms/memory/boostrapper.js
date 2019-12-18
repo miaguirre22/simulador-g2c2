@@ -1,7 +1,7 @@
 import Store from "../../store/index"
 /**
  * 
- * 
+ * configuración inicial de la memoria
  */
 export default (state) => {
     if(state.sistemaParticiones.tipoParticiones === 'variables') {

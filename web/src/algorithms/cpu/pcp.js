@@ -6,9 +6,11 @@
 export default (state, counter) => {
 
     // se toman los procesos listos para ejecutar
-    const procesosListos = state.memoria.particiones
-    .filter(p => !p.libre)
-    .map(p => p.proceso)
+    // const procesosListos = state.memoria.particiones
+    // .filter(p => !p.libre)
+    // .map(p => p.proceso)
+
+    const procesosListos = state.colaListos.procesos
 
     // console.log(procesosListos)
     if(procesosListos.length) {
@@ -97,22 +99,22 @@ let i = 0
 let pid = null
 function getProcesoRoundRobin(procesos, particiones) {
     particiones.sort((p1, p2) => {
-        if(p1.id - p2.id < 0) return -1
-        else return 1
+        return p1.id - p2.id
      })
 
      let proceso = null
 
     // //  casos en los que el proceso no consume todo el quantum
-    // if(!particiones[i].libre && pid != particiones[i].proceso.id) {
-    //     q = quantum
-    //     pid = particiones[i].proceso.id
-    // }
+    if(!particiones[i].libre && pid != particiones[i].proceso.id) {
+        q = quantum
+    }
 
     do {
         if(!particiones[i].libre) {
             q--
             proceso = particiones[i].proceso
+            // se setea el pid del proceso que se está por ejecutar
+            pid = particiones[i].proceso.id
             if(q === 0) {
                 q = quantum
                 if(++i === particiones.length) {
